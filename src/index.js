@@ -12,9 +12,8 @@ module.exports = function toReadable (number) {
     9: 'nine',
   };
 
-//создаю объект от десяти до девятнадцати
- const tenToNineteen = {
-
+//создаю объект от 11 до 19
+ const elevenToNineteen = {
     11: 'eleven',
     12: 'twelve',
     13: 'thirteen',
@@ -43,36 +42,50 @@ module.exports = function toReadable (number) {
  const numberToString = number.toString();
  
 
- if (number%100 === 0 && number !==0){
-    return oneToNine[Math.floor(number/100)] + ' hundred';
-  }
+if (number === 0) {
+    return 'zero';
+}  
 
+//числа от единицы до девяти----------------------------------------------------------------
+if ((number < 10) && (number !== 0)) { 
+    return oneToNine[number];
+}
+
+//круглые десятки--------------------------------------------------------------------------
+if ((number%10) === 0 && number<100) { 
+    return dozens[number];
+} 
+//круглые сотни-------------------------------------------------------------------------
+if (number%100 === 0 && number !==0){
+    return oneToNine[Math.floor(number/100)] + ' hundred';
+}
+
+//числа от 11 до 19---------------------------------------------------------------------- 
+if ((number > 10) && (number < 20)) {
+    return elevenToNineteen[number];
+}  
+
+//числа от 21 до 99----------------------------------------------------------------------
+if ((number >= 20) && (number < 100)) {
+    return dozens[(Math.floor(number/10))*10] + ' ' + oneToNine[number%10];
+
+//Трехзначные числа-------------------------------------------------------------------------------------------------------
+
+//506-----------------------------------------------------------------------------------------------------------------------
+} if (number > 100 && Number(numberToString[1]) == 0 && Number(numberToString[2]) !== 0) {
+    return oneToNine[Math.floor(number/100)] + ' hundred ' + oneToNine[number%10];
+
+//516-------------------------------------------------------------------------------------------------------------------------
+} if (number > 100 && Number(numberToString[1]) == 1 && Number(numberToString[2]) > 0) { 
+    return oneToNine[Math.floor(number/100)] + ' hundred ' + elevenToNineteen[Number(numberToString.slice(-2))];
+} 
+//560-----------------------------------------------------------------------------------------------------------------------
 if ((number%10) === 0 && number>=100) {
     return oneToNine[Math.floor(number/100)] + ' hundred ' + dozens[dozenForHungreds];
 }  
-
-if (number === 0) {
-    return 'zero';
-}  else if ((number%10) === 0 && number<100) { //круглые десятки
-    return dozens[number];
-}  else if ((number < 10) && (number !== 0)) { //числа от единицы до девяти
-    return oneToNine[number];
-}  else if ((number > 10) && (number < 20)) {
-    return tenToNineteen[number];
-}  else if ((number >= 20) && (number < 100)) {
-    return dozens[(Math.floor(number/10))*10] + ' ' + oneToNine[number%10];
-//276-----------------------------------------------------------------------------------------------------------------------
-} else if (number > 100 && Number(numberToString[1]) > 1 && Number(numberToString[2]) !== 0) {
-    return oneToNine[Math.floor(number/100)] + ' hundred ' + dozens[dozenForHungreds] + ' ' + oneToNine[number%10];
-//506-----------------------------------------------------------------------------------------------------------------------
-} else if (number > 100 && Number(numberToString[1]) == 0 && Number(numberToString[2]) !== 0) {
-    return oneToNine[Math.floor(number/100)] + ' hundred ' + oneToNine[number%10];
-//215-------------------------------------------------------------------------------------------------------------------------
-} else if (number > 100 && Number(numberToString[1]) == 1 && Number(numberToString[2]) > 0) { 
-    return oneToNine[Math.floor(number/100)] + ' hundred ' + tenToNineteen[Number(numberToString.slice(-2))];
-
-} 
- 
-
+//561-----------------------------------------------------------------------------------------------------------------------
+if (number > 100 && Number(numberToString[1]) > 1 && Number(numberToString[2]) !== 0) {
+    return oneToNine[Math.floor(number/100)] + ' hundred ' + dozens[dozenForHungreds] + ' ' + oneToNine[number%10]; 
 };
 
+};
